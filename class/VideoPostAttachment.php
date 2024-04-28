@@ -2,8 +2,18 @@
 
 namespace class;
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class VideoPostAttachment
 {
+    /**
+     * Current version.
+     *
+     * @since 1.0
+     * @var string
+     */
+    const VERSION = '1.0.1';
 
     /**
      * Initialize the class and set its properties.
@@ -15,9 +25,9 @@ class VideoPostAttachment
         }
         add_action( 'init', array( $this, 'register_video_post_type' ) );
         add_action( 'after_switch_theme', array( $this, 'video_post_rewrite_flush' ) );
-        add_action( 'edit_attachment', array( $this, 'update_video_post_on_attachment_update' ), 10, 2 );
         add_action( 'add_attachment', array( $this, 'create_video_post_from_attachment' ), 10, 1 );
-        add_action( 'plugins_loaded', array( $this, 'video_posts_load_textdomain') );
+        add_action( 'edit_attachment', array( $this, 'update_video_post_on_attachment_update' ), 10, 2 );
+        self::loadTextdomain();
     }
 
     /**
@@ -108,15 +118,6 @@ class VideoPostAttachment
     }
 
     /**
-     * Load plugin text domain for translation.
-     *
-     * @since 1.0.0
-     */
-    public function video_posts_load_textdomain() {
-        load_plugin_textdomain( 'video-post-on-upload', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-    }
-
-    /**
      * updates video post on attachment update
      * @param $post_id
      * @return void
@@ -157,6 +158,37 @@ class VideoPostAttachment
                     wp_cache_delete($video_post_id, 'post');
                 }
             }
+        }
+    }
+
+    /*
+     * Load plugin languages
+     */
+    public static function loadTextdomain() {
+
+        // Plugin textdomain. This should match the one set in the plugin header.
+        $domain = 'video-post-on-upload';
+        $fileName = 'video-custom-posts.mo';
+        $languagesDirectory = __DIR__ . '/languages/';
+
+        // Setup paths to current locale file
+        $local  = $languagesDirectory . $fileName;
+        $global = WP_LANG_DIR . "/{$domain}/" . $fileName;
+
+        if ( file_exists( $global ) ) {
+
+            // Look in global `../wp-content/languages/{$domain}/` folder.
+            load_textdomain( $domain, $global );
+
+        } elseif ( file_exists( $local ) ) {
+
+            // Look in local `../wp-content/plugins/{plugin-directory}/languages/` folder.
+            load_textdomain( $domain, $local );
+
+        } else {
+
+            // Load the default language files
+            load_plugin_textdomain( $domain, false, $languagesDirectory );
         }
     }
 

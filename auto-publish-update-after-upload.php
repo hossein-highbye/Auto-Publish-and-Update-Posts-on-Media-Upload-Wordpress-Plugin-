@@ -5,13 +5,17 @@
  * Description: Creates post on file upload to media section of admin.
  * Version:     1.0.0
  * Author:      Hossein Barzegari
- * Author URI:  https://linkedin.com/in/hossein-barzegar-996937178
+ * Author URI:  https://linktr.ee/HosseinBarzegari
  * License:     GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: video-post-on-upload
+ * Domain Path: /languages
  */
 
 namespace class;
 require_once __DIR__ . '/class/VideoPostAttachment.php';
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 $VideoClass = new VideoPostAttachment();
