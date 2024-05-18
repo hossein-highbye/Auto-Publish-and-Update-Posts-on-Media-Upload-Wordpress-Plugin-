@@ -3,7 +3,7 @@
  * Plugin Name: Auto Publish and Update Posts on Video Upload (right now only video file types)
  * Plugin URI:
  * Description: Creates post on file upload to media section of admin.
- * Version:     1.0.0
+ * Version:     1.0.1
  * Author:      Hossein Barzegari
  * Author URI:  https://linktr.ee/HosseinBarzegari
  * License:     GPLv2 or later
